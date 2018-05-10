@@ -87,7 +87,62 @@
 #define RCC_CIR_BYTE3_ADDRESS         ((uint32_t)0x4002100A)
 /* CFGR register byte 4 (Bits[31:24]) base address */
 #define RCC_CFGR_BYTE4_ADDRESS        ((uint32_t)0x40021007)
+/*******************  Bit definition for RCC_CFGR register  *******************/
+/*!< SW configuration */
+#define  RCC_CFGR_SW                         ((uint32_t)0x00000003)        /*!< SW[1:0] bits (System clock Switch) */
+#define  RCC_CFGR_SW_0                       ((uint32_t)0x00000001)        /*!< Bit 0 */
+#define  RCC_CFGR_SW_1                       ((uint32_t)0x00000002)        /*!< Bit 1 */
 
+
+/********************  Bit definition for RCC_CR register  ********************/
+#define  RCC_CR_HSION                        ((uint32_t)0x00000001)        /*!< Internal High Speed clock enable */
+#define  RCC_CR_HSIRDY                       ((uint32_t)0x00000002)        /*!< Internal High Speed clock ready flag */
+#define  RCC_CR_HSITRIM                      ((uint32_t)0x000000F8)        /*!< Internal High Speed clock trimming */
+#define  RCC_CR_HSICAL                       ((uint32_t)0x0000FF00)        /*!< Internal High Speed clock Calibration */
+#define  RCC_CR_HSEON                        ((uint32_t)0x00010000)        /*!< External High Speed clock enable */
+#define  RCC_CR_HSERDY                       ((uint32_t)0x00020000)        /*!< External High Speed clock ready flag */
+#define  RCC_CR_HSEBYP                       ((uint32_t)0x00040000)        /*!< External High Speed clock Bypass */
+#define  RCC_CR_CSSON                        ((uint32_t)0x00080000)        /*!< Clock Security System enable */
+#define  RCC_CR_PLLON                        ((uint32_t)0x01000000)        /*!< PLL enable */
+#define  RCC_CR_PLLRDY                       ((uint32_t)0x02000000)        /*!< PLL clock ready flag */
+
+//System clock switch
+#define SW_HSI_SYSCLOCK                      ((uint32_t)0x00000000)
+#define SW_HSE_SYSCLOCK                      ((uint32_t)0x00000001)
+#define SW_PLL_SYSCLOCK                      ((uint32_t)0x00000002)
+#define SW_NOT_ALLOWED                       ((uint32_t)0x00000003)
+//System clock mask
+#define RCC_SWS_MASK                         ((uint32_t)0x0000000C)
+//ADC PREscaler
+#define ADCPRE_PLCK2_DIVIDED2                ((uint32_t)0x00000000)
+#define ADCPRE_PLCK2_DIVIDED4                ((uint32_t)0x00004000)
+#define ADCPRE_PLCK2_DIVIDED6                ((uint32_t)0x00008000)
+#define ADCPRE_PLCK2_DIVIDED8                ((uint32_t)0x0000C000)
+//APB2 PREscaler
+#define APB2_PCLK2_NOT_DIVIDED               ((uint32_t)0x00000000)
+#define APB2_PCLK2_DIVIDED2                  ((uint32_t)0x00002000)
+#define APB2_PCLK2_DIVIDED4                  ((uint32_t)0x00002800)
+#define APB2_PCLK2_DIVIDED8                  ((uint32_t)0x00003000)
+#define APB2_PCLK2_DIVIDED16                 ((uint32_t)0x00003800)
+//APB1 PREscaler
+#define APB1_PCLK1_NOT_DIVIDED               ((uint32_t)0x00000000)
+#define APB1_PCLK1_DIVIDED2                  ((uint32_t)0x00000400)
+#define APB1_PCLK1_DIVIDED4                  ((uint32_t)0x00000500)
+#define APB1_PCLK1_DIVIDED8                  ((uint32_t)0x00000600)
+#define APB1_PCLK1_DIVIDED16                 ((uint32_t)0x00000700)
+//AHB PREsacler
+#define SYSCLK_NOT_DIVIDED                   ((uint32_t)0x00000000)
+#define SYSCLK_DIVIDED2                      ((uint32_t)0x00000080)
+#define SYSCLK_DIVIDED4                      ((uint32_t)0x00000090)
+#define SYSCLK_DIVIDED8                      ((uint32_t)0x000000A0)
+#define SYSCLK_DIVIDED16                     ((uint32_t)0x000000B0)
+#define SYSCLK_DIVIDED64                     ((uint32_t)0x000000C0)
+#define SYSCLK_DIVIDED128                    ((uint32_t)0x000000D0)
+#define SYSCLK_DIVIDED256                    ((uint32_t)0x000000E0)
+#define SYSCLK_DIVIDED512                    ((uint32_t)0x000000F0)
+
+
+__IO uint32_t StartUpCounter = 0;
 
 
 RCC_DEF void RCC_DeInit(void);
@@ -122,7 +177,8 @@ RCC_DEF FlagStatus RCC_GetFlagStatus(uint8_t RCC_FLAG);
 RCC_DEF void RCC_ClearFlag(void);
 RCC_DEF ITStatus RCC_GetITStatus(uint8_t RCC_IT);
 RCC_DEF void RCC_ClearITPendingBit(uint8_t RCC_IT);
-
+RCC_DEF void HSE_Init(void);
+RCC_DEF void HSI_Init(void);
 
 
 /**
@@ -955,4 +1011,79 @@ RCC_DEF void RCC_ClearITPendingBit(uint8_t RCC_IT)
     /* Perform Byte access to RCC_CIR[23:16] bits to clear the selected interrupt
      pending bits */
      *(__IO uint8_t *)RCC_CIR_BYTE3_ADDRESS = RCC_IT;
+}
+
+RCC_DEF void HSI_Init(void)
+{   
+    __IO uint32_t HSIStatus = 0;
+    RCC->CR |= ((uint32_t)RCC_CR_HSION);
+    do
+    {
+        HSIStatus = RCC->CR & RCC_CR_HSIRDY;
+        StartUpCounter++;
+    }while((HSIStatus == 0) && (StartUpCounter != HSEStartUp_TimeOut));
+    //flash access delay 48MHz < SYSCLOCK <=72MHz
+    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_2;
+     //PLL setting
+    /* HCLK = SYSTICK */
+    RCC->CFGR |= (uint32_t)SYSCLK_NOT_DIVIDED;
+    /* PCLK2 = HCLK */
+    RCC->CFGR |= (uint32_t)APB2_PCLK2_NOT_DIVIDED;
+    /* PCLK1 = HCLK */
+    RCC->CFGR |= (uint32_t)APB1_PCLK1_DIVIDED2;
+    /* ADC = set div 4 */
+    RCC->CFGR |= ADCPRE_PLCK2_DIVIDED4;
+    /* PLL ON */
+    RCC->CR |= RCC_CR_PLLON;
+    /* Wait till PLL is ready */
+    while((RCC->CR & RCC_CR_PLLRDY) == 0)
+    {
+        ;
+    }
+    /* select PLL as system clock source */
+    RCC->CFGR |= (uint32_t)SW_PLL_SYSCLOCK;
+    /* Wailt til PLL is used as system clock source */
+    while((RCC->CFGR & (uint32_t)RCC_SWS_MASK) != ((uint32_t)0x08))
+    {
+        ;
+    }
+}
+
+RCC_DEF void HSE_Init(void)
+{
+    __IO uint32_t HSEStatus = 0;
+    RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+    do
+    {
+        HSEStatus = RCC->CR & RCC_CR_HSERDY;
+        StartUpCounter++;
+    }while((HSEStatus == 0) && (StartUpCounter != HSEStartUp_TimeOut));
+    //flash access delay 48MHz < SYSCLOCK <=72MHz
+    FLASH->ACR |= FLASH_ACR_LATENCY_2;
+     //PLL setting
+    /* HCLK = SYSTICK */
+    RCC->CFGR |= (uint32_t)SYSCLK_NOT_DIVIDED;
+    /* PCLK2 = HCLK */
+    RCC->CFGR |= (uint32_t)APB2_PCLK2_NOT_DIVIDED;
+    /* PCLK1 = HCLK */
+    RCC->CFGR |= (uint32_t)APB1_PCLK1_DIVIDED2;
+    /* ADC = set div 6 */
+    RCC->CFGR |= (uint32_t)ADCPRE_PLCK2_DIVIDED6;
+    /* PLL configuration : PLLCLK = HSE * 6 = 72MHz */
+    RCC->CFGR |= (uint32_t)(RCC_PLLSource_HSE_Div1 | RCC_PLLMul_6);
+    /* PLL ON */
+    RCC->CR |= RCC_CR_PLLON;
+    /* Wait till PLL is ready */
+    while((RCC->CR & RCC_CR_PLLRDY) == 0)
+    {
+        ;
+    }
+    /* select PLL as system clock source */
+    RCC->CFGR &= ((uint32_t)~(RCC_CFGR_SW));
+    RCC->CFGR |= (uint32_t)SW_PLL_SYSCLOCK;
+    /* Wailt til PLL is used as system clock source */
+    while((RCC->CFGR & (uint32_t)RCC_SWS_MASK) != ((uint32_t)0x08))
+    {
+        ;
+    }
 }

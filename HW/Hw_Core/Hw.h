@@ -12,11 +12,18 @@
 #include "Hw_TIM.h"
 
 //hardware driver add
+#include "Hw_Led.h"
 
 //print library
 #include "Ld_printf.h"
 
+#ifdef HW_INIT_LOCAL
+#define HW_INIT_DEF
+#else
+#define HW_INIT_DEF            extern
+#endif
 
+HW_INIT_DEF void HW_Init(void);
 
 
 #endif

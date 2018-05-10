@@ -390,7 +390,8 @@ RCC_DEF FlagStatus RCC_GetFlagStatus(uint8_t RCC_FLAG);
 RCC_DEF void RCC_ClearFlag(void);
 RCC_DEF ITStatus RCC_GetITStatus(uint8_t RCC_IT);
 RCC_DEF void RCC_ClearITPendingBit(uint8_t RCC_IT);
-
+RCC_DEF void HSE_Init(void);
+RCC_DEF void HSI_Init(void);
 
 /** @defgroup RCC_Private_Variables
   * @{
