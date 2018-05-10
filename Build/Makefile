@@ -29,13 +29,10 @@ SRC_HW = ../HW/Hw_Core/$(STARTUP_C)                      \
 		 ../HW/Hw_Core/Hw_NVIC.c                         \
 		 #../HW/Hw_Core/Hw_ADC.c                          \
 		 ../HW/Hw_Core/Hw_SysTick.c                      \
-		 ../HW/Hw_Lib/Hw_Led.c                           \
-		 ../HW/Hw_Lib/Hw_Key.c                           \
-		 ../HW/Hw_Lib/Hw_Segment.c                       \
 		 ../HW/Hw_Core/Hw_DMA.c                          \
 		 ../HW/Hw_Core/Hw_SPI.c                          \
 		 
-
+SRC_HWDRIVER = ../Hw/Hw_Lib/Hw_Led.c                    \
 
 
 #src aplication c file
@@ -55,7 +52,7 @@ SRC_MENU = #../Menu/menu_command.c                                 \
            ../Menu/Led_Command.c                                  \
 
 #source file 
-SRC =$(SRC_HW) $(SRC_LIB) $(SRC_MENU) $(SRC_AP)
+SRC =$(SRC_HW) $(SRC_LIB) $(SRC_MENU) $(SRC_AP) $(SRC_HWDRIVER)
 #thumb mode
 THUMB = -mthumb
 #include header
