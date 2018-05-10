@@ -397,7 +397,7 @@ typedef struct
     __IO uint32_t CIR;
     __IO uint32_t APB2RSTR;
     __IO uint32_t APB1RSTR;
-    __IO uint32_t APBENR;
+    __IO uint32_t AHBENR;
     __IO uint32_t APB2ENR;
     __IO uint32_t APB1ENR;
     __IO uint32_t BDCR;
