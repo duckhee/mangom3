@@ -227,6 +227,7 @@
 #define  FLASH_ACR_LATENCY_1                 ((uint8_t)0x01)               /*!< Bit 0 24 < SYSCLK <= 48MHz */
 #define  FLASH_ACR_LATENCY_2                 ((uint8_t)0x02)               /*!< Bit 1 48 < SYSCLK <= 72MHz */
 
+
 #ifdef HW_FLASH_LOCAL
 #define FLASH_DEF
 #else

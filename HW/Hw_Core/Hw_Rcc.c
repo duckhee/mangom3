@@ -105,6 +105,26 @@
 #define  RCC_CR_CSSON                        ((uint32_t)0x00080000)        /*!< Clock Security System enable */
 #define  RCC_CR_PLLON                        ((uint32_t)0x01000000)        /*!< PLL enable */
 #define  RCC_CR_PLLRDY                       ((uint32_t)0x02000000)        /*!< PLL clock ready flag */
+//pll use hse or hsi
+#define PLLSRC_HSI                           ((uint32_t)0x00000000)
+#define PLLSRC_HSE                           ((uint32_t)0x00010000)        /*!< HSE clock selected as PLL entry clock source */
+//pll mult
+#define PLL_INPUT_MULT2                      ((uint32_t)0x00000000)
+#define PLL_INPUT_MULT3                      ((uint32_t)0x00040000)
+#define PLL_INPUT_MULT4                      ((uint32_t)0x00080000)
+#define PLL_INPUT_MULT5                      ((uint32_t)0x000C0000)
+#define PLL_INPUT_MULT6                      ((uint32_t)0x00100000)
+#define PLL_INPUT_MULT7                      ((uint32_t)0x00140000)
+#define PLL_INPUT_MULT8                      ((uint32_t)0x00180000)
+#define PLL_INPUT_MULT9                      ((uint32_t)0x001C0000)
+#define PLL_INPUT_MULT10                     ((uint32_t)0x00200000)
+#define PLL_INPUT_MULT11                     ((uint32_t)0x00240000)
+#define PLL_INPUT_MULT12                     ((uint32_t)0x00280000)
+#define PLL_INPUT_MULT13                     ((uint32_t)0x002C0000)
+#define PLL_INPUT_MULT14                     ((uint32_t)0x00300000)
+#define PLL_INPUT_MULT15                     ((uint32_t)0x00340000)
+#define PLL_INPUT_MULT16                     ((uint32_t)0x00380000)
+#define PLL_INPUT_MULT2_16                   ((uint32_t)0x003C0000)
 
 //System clock switch
 #define SW_HSI_SYSCLOCK                      ((uint32_t)0x00000000)
@@ -140,6 +160,7 @@
 #define SYSCLK_DIVIDED128                    ((uint32_t)0x000000D0)
 #define SYSCLK_DIVIDED256                    ((uint32_t)0x000000E0)
 #define SYSCLK_DIVIDED512                    ((uint32_t)0x000000F0)
+
 
 
 __IO uint32_t StartUpCounter = 0;
@@ -1021,10 +1042,10 @@ RCC_DEF void HSI_Init(void)
     {
         HSIStatus = RCC->CR & RCC_CR_HSIRDY;
         StartUpCounter++;
-    }while((HSIStatus == 0) && (StartUpCounter != HSEStartUp_TimeOut));
-    //flash access delay 48MHz < SYSCLOCK <=72MHz
-    FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_2;
-     //PLL setting
+    }while((HSIStatus == 0) && (StartUpCounter == 0x500));
+    //flash access delay 24Mhz < SYSCLK <= 48Mhz
+    FLASH->ACR |= FLASH_ACR_LATENCY_1;
+    //PLL setting
     /* HCLK = SYSTICK */
     RCC->CFGR |= (uint32_t)SYSCLK_NOT_DIVIDED;
     /* PCLK2 = HCLK */
@@ -1032,7 +1053,7 @@ RCC_DEF void HSI_Init(void)
     /* PCLK1 = HCLK */
     RCC->CFGR |= (uint32_t)APB1_PCLK1_DIVIDED2;
     /* ADC = set div 4 */
-    RCC->CFGR |= ADCPRE_PLCK2_DIVIDED4;
+    RCC->CFGR |= (uint32_t)ADCPRE_PLCK2_DIVIDED4;
     /* PLL ON */
     RCC->CR |= RCC_CR_PLLON;
     /* Wait till PLL is ready */
@@ -1045,7 +1066,7 @@ RCC_DEF void HSI_Init(void)
     /* Wailt til PLL is used as system clock source */
     while((RCC->CFGR & (uint32_t)RCC_SWS_MASK) != ((uint32_t)0x08))
     {
-        ;
+        ; //조건을 만족하면 여기 pll 준비가 안되어 있다는 것
     }
 }
 
@@ -1057,7 +1078,7 @@ RCC_DEF void HSE_Init(void)
     {
         HSEStatus = RCC->CR & RCC_CR_HSERDY;
         StartUpCounter++;
-    }while((HSEStatus == 0) && (StartUpCounter != HSEStartUp_TimeOut));
+    }while((HSEStatus == 0) && (StartUpCounter == 0x500));
     //flash access delay 48MHz < SYSCLOCK <=72MHz
     FLASH->ACR |= FLASH_ACR_LATENCY_2;
      //PLL setting
@@ -1070,7 +1091,7 @@ RCC_DEF void HSE_Init(void)
     /* ADC = set div 6 */
     RCC->CFGR |= (uint32_t)ADCPRE_PLCK2_DIVIDED6;
     /* PLL configuration : PLLCLK = HSE * 6 = 72MHz */
-    RCC->CFGR |= (uint32_t)(RCC_PLLSource_HSE_Div1 | RCC_PLLMul_6);
+    RCC->CFGR |= (uint32_t)(PLLSRC_HSE | PLL_INPUT_MULT6);
     /* PLL ON */
     RCC->CR |= RCC_CR_PLLON;
     /* Wait till PLL is ready */
@@ -1079,11 +1100,11 @@ RCC_DEF void HSE_Init(void)
         ;
     }
     /* select PLL as system clock source */
-    RCC->CFGR &= ((uint32_t)~(RCC_CFGR_SW));
+    RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
     RCC->CFGR |= (uint32_t)SW_PLL_SYSCLOCK;
     /* Wailt til PLL is used as system clock source */
     while((RCC->CFGR & (uint32_t)RCC_SWS_MASK) != ((uint32_t)0x08))
     {
-        ;
+        ; //조건을 만족하면 여기 pll 준비가 안되어 있다는 것
     }
 }

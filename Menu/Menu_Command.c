@@ -9,9 +9,9 @@ typedef int bool;
 #define true         1
 #define false        0
 
-#define NULL        ((void)*0)
+#define NULL        ((void*)0)
 
-typedef struct{
+typedef enum{
     VAR_LONG = 32,
     VAR_SHORT = 16,
     VAR_CHAR = 8
@@ -75,7 +75,6 @@ struct _CMD_TBL cmd_tbl[] =
 
 MENU_COMMAND_DEF void command_main(void)
 {
-    {
     //키보드로 부터 받은 문자열을 저장하는 버퍼 생성
     int argc = 0;
     //문자열을 가르키는 포인터 배열 선언

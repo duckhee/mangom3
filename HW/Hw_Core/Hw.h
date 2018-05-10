@@ -10,6 +10,7 @@
 #include "Hw_Gpio.h"
 #include "Hw_Usart.h"
 #include "Hw_TIM.h"
+#include "Hw_Flash.h"
 
 //hardware driver add
 #include "Hw_Led.h"

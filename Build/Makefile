@@ -19,14 +19,15 @@ EXTRAINCDIRS = ../LIB               \
 
 #src hardware c file
 SRC_HW = ../HW/Hw_Core/$(STARTUP_C)                      \
+		 ../HW/Hw_Core/Hw.c                              \
          ../HW/Hw_Core/Hw_Rcc.c                          \
 		 ../HW/Hw_Core/Hw_GPIO.c                         \
-		 ../HW/Hw_Core/Hw.c                              \
 		 ../HW/Hw_Core/Hw_Usart.c                        \
-		 ../HW/Hw_Core/Hw_EXTI.c                         \
 		 ../HW/Hw_Core/Hw_TIM.c                          \
+		 ../HW/Hw_Core/Hw_EXTI.c                         \
 		 ../HW/Hw_Core/Hw_IRQ.c                          \
 		 ../HW/Hw_Core/Hw_NVIC.c                         \
+		 ../Hw/Hw_Core/Hw_Flash.c                        \
 		 #../HW/Hw_Core/Hw_ADC.c                          \
 		 ../HW/Hw_Core/Hw_SysTick.c                      \
 		 ../HW/Hw_Core/Hw_DMA.c                          \
@@ -48,7 +49,7 @@ SRC_LIB = ../LIB/Ld_printf.c                          \
 
 
 #src menu c file
-SRC_MENU = #../Menu/menu_command.c                                 \
+SRC_MENU = ../Menu/Menu_Command.c                                 \
            ../Menu/Led_Command.c                                  \
 
 #source file 

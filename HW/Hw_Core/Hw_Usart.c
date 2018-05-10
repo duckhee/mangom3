@@ -110,33 +110,35 @@ USART_DEF void USART_ClearITPendingBit(USART_TypeDef* USARTx, uint16_t USART_IT)
   */
 USART_DEF void USART_DeInit(USART_TypeDef* USARTx)
 {
-    if(USARTx == USART1)
-    {
-        RCC_APB2PeriphResetCmd(RCC_APB2Periph_USART1, ENABLE);
-        RCC_APB2PeriphResetCmd(RCC_APB2Periph_USART1, DISABLE);
+
+  if (USARTx == USART1)
+  {
+    RCC_APB2PeriphResetCmd(RCC_APB2Periph_USART1, ENABLE);
+    RCC_APB2PeriphResetCmd(RCC_APB2Periph_USART1, DISABLE);
+  }
+  else if (USARTx == USART2)
+  {
+    RCC_APB1PeriphResetCmd(RCC_APB1Periph_USART2, ENABLE);
+    RCC_APB1PeriphResetCmd(RCC_APB1Periph_USART2, DISABLE);
+  }
+  else if (USARTx == USART3)
+  {
+    RCC_APB1PeriphResetCmd(RCC_APB1Periph_USART3, ENABLE);
+    RCC_APB1PeriphResetCmd(RCC_APB1Periph_USART3, DISABLE);
+  }    
+  else if (USARTx == UART4)
+  {
+    RCC_APB1PeriphResetCmd(RCC_APB1Periph_UART4, ENABLE);
+    RCC_APB1PeriphResetCmd(RCC_APB1Periph_UART4, DISABLE);
+  }    
+  else
+  {
+    if (USARTx == UART5)
+    { 
+      RCC_APB1PeriphResetCmd(RCC_APB1Periph_UART5, ENABLE);
+      RCC_APB1PeriphResetCmd(RCC_APB1Periph_UART5, DISABLE);
     }
-    else if(USARTx == USART2)
-    {
-        RCC_APB1PeriphResetCmd(RCC_APB1Periph_USART2, ENABLE);
-        RCC_APB1PeriphResetCmd(RCC_APB1Periph_USART2, DISABLE);
-    }
-    else if(USARTx == USART3)
-    {
-        RCC_APB1PeriphResetCmd(RCC_APB1Periph_USART3, ENABLE);
-        RCC_APB1PeriphResetCmd(RCC_APB1Periph_USART3, DISABLE);
-    }
-    else if(USARTx == UART4)
-    {
-        RCC_APB1PeriphResetCmd(RCC_APB1Periph_UART4, ENABLE);
-        RCC_APB1PeriphResetCmd(RCC_APB1Periph_UART4, DISABLE);
-    }
-    else{
-        if(USARTx == UART5)
-        {
-            RCC_APB1PeriphResetCmd(RCC_APB1Periph_UART5, ENABLE);
-            RCC_APB1PeriphResetCmd(RCC_APB1Periph_UART5, DISABLE);
-        }
-    }
+  }
 }
 
 /**
@@ -157,79 +159,88 @@ USART_DEF void USART_Init(USART_TypeDef* USARTx, USART_InitTypeDef* USART_InitSt
     uint32_t fractionaldivider = 0x00;
     uint32_t usartxbase = 0;
     RCC_ClocksTypeDef RCC_ClocksStatus;
-    /* The hardware flow control is available only for USART1, USART2 and USART3 */
-    if(USART_InitStruct->USART_HardwareFlowControl != USART_HardwareFlowControl_None)
-    {
-        //assert_param(IS_USART_123_PERIPH(USARTx));
-    }
-    usartxbase = (uint32_t)USARTx;
-    /*---------------------------- USART CR2 Configuration -----------------------*/
-    tmpreg = USARTx->CR2;
-    /* Clear STOP[13:12] bits */
-    tmpreg &= USART_CR2_STOP_CLEAR_Mask;
-    /* Configure the USART Stop Bits, Clock, CPOL, CPHA and LastBit ------------*/
-    /* Set STOP[13:12] bits according to USART_StopBits value */
-    tmpreg |= (uint32_t)USART_InitStruct->USART_StopBits;
-    /* Write to USART CR2 */
-    USARTx->CR2 = (uint16_t)tmpreg;
-    /*---------------------------- USART CR1 Configuration -----------------------*/
-    tmpreg = USARTx->CR1;
-    /* Clear M, PCE, PS, TE and RE bits */
-    tmpreg &= USART_CR1_CLEAR_Mask;
-    /* Configure the USART Word Length, Parity and mode ----------------------- */
-    /* Set the M bits according to USART_WordLength value */
-    /* Set PCE and PS bits according to USART_Parity value */
-    /* Set TE and RE bits according to USART_Mode value */
-    tmpreg |= (uint32_t)USART_InitStruct->USART_WordLength | USART_InitStruct->USART_Parity | USART_InitStruct->USART_Mode;
-    /* Write to USART CR1 */
-    USARTx->CR1 = (uint16_t)tmpreg;
-    /*---------------------------- USART CR3 Configuration -----------------------*/  
-    tmpreg = USARTx->CR3;
-    /* Clear CTSE and RTSE bits */
-    tmpreg &= USART_CR3_CLEAR_Mask;
-    /* Configure the USART HFC -------------------------------------------------*/
-    /* Set CTSE and RTSE bits according to USART_HardwareFlowControl value */
-    tmpreg |= USART_InitStruct->USART_HardwareFlowControl;
-    /* Write to USART CR3 */
-    USARTx->CR3 = (uint16_t)tmpreg;
-    /*---------------------------- USART BRR Configuration -----------------------*/
-    /* Configure the USART Baud Rate -------------------------------------------*/
-    RCC_GetClocksFreq(&RCC_ClocksStatus);
-    if(usartxbase == USART1_BASE)
-    {
-        apbclock = RCC_ClocksStatus.PCLK2_Frequency;
-    }
-    else
-    {
-        apbclock = RCC_ClocksStatus.PCLK1_Frequency;
-    }
-    /* Determine the integer part */
-    if((USARTx->CR1 & USART_CR1_OVER8_Set) != 0)
-    {
-        /* Integer part computing in case Oversampling mode is 8 Samples */
-        integerdivider = ((25 * apbclock) / (2 * (USART_InitStruct->USART_BaudRate)));
-    }
-    else
-    {
-         /* if ((USARTx->CR1 & CR1_OVER8_Set) == 0) */
-         /* Integer part computing in case Oversampling mode is 16 Samples */
-         integerdivider = ((25 * apbclock) / (4 * (USART_InitStruct->USART_BaudRate)));
-    }
-    tmpreg = (integerdivider / 100) << 4;
-    /* Determine the fractional part */
-    fractionaldivider = integerdivider - (100 * (tmpreg >> 4));
-    /* Implement the fractional part in the register */
-    if((USARTx->CR1 & USART_CR1_OVER8_Set) != 0)
-    {
-        tmpreg |= ((((fractionaldivider * 8) + 50) / 100)) & ((uint8_t)0x07);
-    }
-    else
-    {
-        /* if ((USARTx->CR1 & CR1_OVER8_Set) == 0) */
-        tmpreg |= ((((fractionaldivider * 16) + 50) / 100)) & ((uint8_t)0x0F);
-    }
-    /* Write to USART BRR */
-    USARTx->BRR = (uint8_t)tmpreg;
+  /* The hardware flow control is available only for USART1, USART2 and USART3 */
+  if (USART_InitStruct->USART_HardwareFlowControl != USART_HardwareFlowControl_None)
+  {
+    assert_param(IS_USART_123_PERIPH(USARTx));
+  }
+
+  usartxbase = (uint32_t)USARTx;
+
+/*---------------------------- USART CR2 Configuration -----------------------*/
+  tmpreg = USARTx->CR2;
+  /* Clear STOP[13:12] bits */
+  tmpreg &= USART_CR2_STOP_CLEAR_Mask;
+  /* Configure the USART Stop Bits, Clock, CPOL, CPHA and LastBit ------------*/
+  /* Set STOP[13:12] bits according to USART_StopBits value */
+  tmpreg |= (uint32_t)USART_InitStruct->USART_StopBits;
+  
+  /* Write to USART CR2 */
+  USARTx->CR2 = (uint16_t)tmpreg;
+
+/*---------------------------- USART CR1 Configuration -----------------------*/
+  tmpreg = USARTx->CR1;
+  /* Clear M, PCE, PS, TE and RE bits */
+  tmpreg &= USART_CR1_CLEAR_Mask;
+  /* Configure the USART Word Length, Parity and mode ----------------------- */
+  /* Set the M bits according to USART_WordLength value */
+  /* Set PCE and PS bits according to USART_Parity value */
+  /* Set TE and RE bits according to USART_Mode value */
+  tmpreg |= (uint32_t)USART_InitStruct->USART_WordLength | USART_InitStruct->USART_Parity |
+            USART_InitStruct->USART_Mode;
+  /* Write to USART CR1 */
+  USARTx->CR1 = (uint16_t)tmpreg;
+
+/*---------------------------- USART CR3 Configuration -----------------------*/  
+  tmpreg = USARTx->CR3;
+  /* Clear CTSE and RTSE bits */
+  tmpreg &= USART_CR3_CLEAR_Mask;
+  /* Configure the USART HFC -------------------------------------------------*/
+  /* Set CTSE and RTSE bits according to USART_HardwareFlowControl value */
+  tmpreg |= USART_InitStruct->USART_HardwareFlowControl;
+  /* Write to USART CR3 */
+  USARTx->CR3 = (uint16_t)tmpreg;
+
+/*---------------------------- USART BRR Configuration -----------------------*/
+  /* Configure the USART Baud Rate -------------------------------------------*/
+  RCC_GetClocksFreq(&RCC_ClocksStatus);
+  if (usartxbase == USART1_BASE)
+  {
+    apbclock = RCC_ClocksStatus.PCLK2_Frequency;
+  }
+  else
+  {
+    apbclock = RCC_ClocksStatus.PCLK1_Frequency;
+  }
+  
+  /* Determine the integer part */
+  if ((USARTx->CR1 & USART_CR1_OVER8_Set) != 0)
+  {
+    /* Integer part computing in case Oversampling mode is 8 Samples */
+    integerdivider = ((25 * apbclock) / (2 * (USART_InitStruct->USART_BaudRate)));    
+  }
+  else /* if ((USARTx->CR1 & CR1_OVER8_Set) == 0) */
+  {
+    /* Integer part computing in case Oversampling mode is 16 Samples */
+    integerdivider = ((25 * apbclock) / (4 * (USART_InitStruct->USART_BaudRate)));    
+  }
+  tmpreg = (integerdivider / 100) << 4;
+
+  /* Determine the fractional part */
+  fractionaldivider = integerdivider - (100 * (tmpreg >> 4));
+
+  /* Implement the fractional part in the register */
+  if ((USARTx->CR1 & USART_CR1_OVER8_Set) != 0)
+  {
+    tmpreg |= ((((fractionaldivider * 8) + 50) / 100)) & ((uint8_t)0x07);
+  }
+  else /* if ((USARTx->CR1 & CR1_OVER8_Set) == 0) */
+  {
+    tmpreg |= ((((fractionaldivider * 16) + 50) / 100)) & ((uint8_t)0x0F);
+  }
+  
+  /* Write to USART BRR */
+  USARTx->BRR = (uint16_t)tmpreg;
 }
 
 /**
