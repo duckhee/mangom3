@@ -25,7 +25,7 @@ BH1600_DEF void BH1600_Set_Mode_Shutdown(void);
 BH1600_DEF void BH1600_Set_Mode_H_Gain(void);
 BH1600_DEF void BH1600_Set_Mode_L_Gain(void);
 BH1600_DEF void BH1600_Set_Mode_Test(void);
-
+BH1600_DEF int BH1600_Cal(void);
 
 
 #endif

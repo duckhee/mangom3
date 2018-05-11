@@ -8,7 +8,7 @@ BH1600_DEF void BH1600_Set_Mode_Shutdown(void);
 BH1600_DEF void BH1600_Set_Mode_H_Gain(void);
 BH1600_DEF void BH1600_Set_Mode_L_Gain(void);
 BH1600_DEF void BH1600_Set_Mode_Test(void);
-
+BH1600_DEF void BH1600_Cal(void);
 
 BH1600_DEF void BH1600_Init(void)
 {
@@ -81,3 +81,9 @@ BH1600_DEF void BH1600_Set_Mode_Test(void)
     GPIO_SetBits(GPIO_BH1600_MODE, GPIO_BH1600_MODE_GC2_PIN);
 }
 
+BH1600_DEF int BH1600_Cal(void)
+{
+    int volt = ADCConvertedValue;
+
+    return volt;
+}
