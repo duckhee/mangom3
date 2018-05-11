@@ -31,6 +31,7 @@ SRC_HW = ../HW/Hw_Core/$(STARTUP_C)                      \
 		 ../HW/Hw_Core/Hw_ADC.c                          \
 		 ../HW/Hw_Core/Hw_DMA.c                          \
 		 ../HW/Hw_Core/Hw_SPI.c                          \
+		 ../HW/Hw_Core/Hw_I2C.c                          \
 		 #../HW/Hw_Core/Hw_SysTick.c                      \
 		 
 SRC_HWDRIVER = ../Hw/Hw_Lib/Hw_Led.c                    \
