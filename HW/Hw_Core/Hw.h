@@ -11,7 +11,7 @@
 #include "Hw_Usart.h"
 #include "Hw_TIM.h"
 #include "Hw_Flash.h"
-
+#include "hw_ADC.h"
 //hardware driver add
 #include "Hw_Led.h"
 

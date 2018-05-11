@@ -1129,6 +1129,7 @@ typedef struct
 //ADC config
 #define ADC1                ((ADC_TypeDef *) ADC1_BASE)
 #define ADC2                ((ADC_TypeDef *) ADC2_BASE)
+#define ADC3                ((ADC_TypeDef *) ADC3_BASE)
 //SCB config
 #define SCB                 ((SCB_TypeDef *) SCB_BASE)         /*!< SCB configuration struct             */
 //SysTick config
