@@ -21,6 +21,8 @@
 #include "Hw_EXTI.h"
 //hardware driver add
 #include "Hw_Led.h"
+#include "Hw_Key.h"
+#include "Hw_Segment.h"
 
 //print library
 #include "Ld_printf.h"

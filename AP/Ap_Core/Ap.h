@@ -2,7 +2,6 @@
 #define __AP_H__
 
 
-
 #include "Hw.h"
 
 
