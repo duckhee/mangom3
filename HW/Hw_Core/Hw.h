@@ -13,6 +13,12 @@
 #include "Hw_Flash.h"
 #include "Hw_ADC.h"
 #include "Hw_DMA.h"
+#include "Hw_SPI.h"
+#include "Hw_I2C.h"
+#include "Hw_IRQ.h"
+#include "Hw_Systick.h"
+#include "Hw_NVIC.h"
+#include "Hw_EXTI.h"
 //hardware driver add
 #include "Hw_Led.h"
 
