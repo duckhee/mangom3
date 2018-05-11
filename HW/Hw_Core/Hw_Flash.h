@@ -236,6 +236,58 @@
 
 
 
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/** @defgroup FLASH_Exported_Macros
+  * @{
+  */
+
+/**
+  * @}
+  */
+
+/** @defgroup FLASH_Exported_Functions
+  * @{
+  */
+
+/*------------ Functions used for all STM32F10x devices -----*/
+FLASH_DEF void FLASH_SetLatency(uint32_t FLASH_Latency);
+FLASH_DEF void FLASH_HalfCycleAccessCmd(uint32_t FLASH_HalfCycleAccess);
+FLASH_DEF void FLASH_PrefetchBufferCmd(uint32_t FLASH_PrefetchBuffer);
+FLASH_DEF void FLASH_Unlock(void);
+FLASH_DEF void FLASH_UnlockBank1(void);
+FLASH_DEF void FLASH_Lock(void);
+FLASH_DEF void FLASH_LockBank1(void);
+FLASH_DEF FLASH_Status FLASH_ErasePage(uint32_t Page_Address);
+FLASH_DEF FLASH_Status FLASH_EraseAllPages(void);
+FLASH_DEF FLASH_Status FLASH_EraseAllBank1Pages(void);
+FLASH_DEF FLASH_Status FLASH_EraseOptionBytes(void);
+FLASH_DEF FLASH_Status FLASH_ProgramWord(uint32_t Address, uint32_t Data);
+FLASH_DEF FLASH_Status FLASH_ProgramHalfWord(uint32_t Address, uint16_t Data);
+FLASH_DEF FLASH_Status FLASH_ProgramOptionByteData(uint32_t Address, uint8_t Data);
+FLASH_DEF FLASH_Status FLASH_EnableWriteProtection(uint32_t FLASH_Pages);
+FLASH_DEF FLASH_Status FLASH_ReadOutProtection(FunctionalState NewState);
+FLASH_DEF FLASH_Status FLASH_UserOptionByteConfig(uint16_t OB_IWDG, uint16_t OB_STOP, uint16_t OB_STDBY);
+FLASH_DEF uint32_t FLASH_GetUserOptionByte(void);
+FLASH_DEF uint32_t FLASH_GetWriteProtectionOptionByte(void);
+FLASH_DEF FlagStatus FLASH_GetReadOutProtectionStatus(void);
+FLASH_DEF FlagStatus FLASH_GetPrefetchBufferStatus(void);
+FLASH_DEF void FLASH_ITConfig(uint32_t FLASH_IT, FunctionalState NewState);
+FLASH_DEF FlagStatus FLASH_GetFlagStatus(uint32_t FLASH_FLAG);
+FLASH_DEF void FLASH_ClearFlag(uint32_t FLASH_FLAG);
+FLASH_DEF FLASH_Status FLASH_GetStatus(void);
+FLASH_DEF FLASH_Status FLASH_WaitForLastOperation(uint32_t Timeout);
+
+/*------------ New function used for all STM32F10x devices -----*/
+FLASH_Status FLASH_GetBank1Status(void);
+FLASH_Status FLASH_WaitForLastBank1Operation(uint32_t Timeout);
+
 
 
 #endif
