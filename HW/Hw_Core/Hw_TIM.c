@@ -870,7 +870,7 @@ TIM_DEF void TIM_DMAConfig(TIM_TypeDef* TIMx, uint16_t TIM_DMABase, uint16_t TIM
 {
   /* Check the parameters */
   /* Set the event sources */
-  TIMx->EGR = TIM_EventSource;
+  TIMx->DCR = TIM_DMABase | TIM_DMABurstLength;
 }
 
 /**
@@ -1058,7 +1058,7 @@ TIM_DEF void TIM_ETRConfig(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler, uint
   /* Check the parameters */
   tmpsmcr = TIMx->SMCR;
   /* Reset the ETR Bits */
-  tmpsmcr &= SMCR_ETR_Mask;
+  tmpsmcr &= TIM_SMCR_ETR_Mask;
   /* Set the Prescaler, the Filter value and the Polarity */
   tmpsmcr |= (uint16_t)(TIM_ExtTRGPrescaler | (uint16_t)(TIM_ExtTRGPolarity | (uint16_t)(ExtTRGFilter << (uint16_t)8)));
   /* Write to TIMx SMCR */
@@ -1809,7 +1809,7 @@ TIM_DEF void TIM_CCxCmd(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_CC
 
   /* Check the parameters */
 
-  tmp = CCER_CCE_Set << TIM_Channel;
+  tmp = TIM_CCER_CCE_Set << TIM_Channel;
 
   /* Reset the CCxE Bit */
   TIMx->CCER &= (uint16_t)~ tmp;
@@ -1835,7 +1835,7 @@ TIM_DEF void TIM_CCxNCmd(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_C
   uint16_t tmp = 0;
 
   /* Check the parameters */
-  tmp = CCER_CCNE_Set << TIM_Channel;
+  tmp = TIM_CCER_CCNE_Set << TIM_Channel;
 
   /* Reset the CCxNE Bit */
   TIMx->CCER &= (uint16_t) ~tmp;
@@ -1874,9 +1874,9 @@ TIM_DEF void TIM_SelectOCxM(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TI
 
   /* Check the parameters */
   tmp = (uint32_t) TIMx;
-  tmp += CCMR_Offset;
+  tmp += TIM_CCMR_Offset;
 
-  tmp1 = CCER_CCE_Set << (uint16_t)TIM_Channel;
+  tmp1 = TIM_CCER_CCE_Set << (uint16_t)TIM_Channel;
 
   /* Disable the Channel: Reset the CCxE Bit */
   TIMx->CCER &= (uint16_t) ~tmp1;
