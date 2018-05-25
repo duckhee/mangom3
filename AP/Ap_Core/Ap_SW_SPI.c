@@ -2,7 +2,7 @@
 
 #include "Ap_SW_SPI.h"
 
-#define M32
+#define Z32
 
 SW_SPI_DEF void TIMER_Wait_us(__IO uint32_t nCount);
 SW_SPI_DEF uint8_t SW_SPI_ReadVal_MISO(void);
@@ -15,7 +15,7 @@ SW_SPI_DEF void SW_SPI_CLK_Init(void);
 SW_SPI_DEF void SW_SPI_CLK_Toggle(void);
 SW_SPI_DEF unsigned char SW_SPI_TXRX(unsigned char tx_data);
 
-
+#ifdef Z32
 SW_SPI_DEF void TIMER_Wait_us(__IO uint32_t nCount)
 {
     for(; nCount != 0; nCount--);
@@ -23,27 +23,27 @@ SW_SPI_DEF void TIMER_Wait_us(__IO uint32_t nCount)
 
 SW_SPI_DEF uint8_t SW_SPI_ReadVal_MISO(void)
 {
-    return GPIO_ReadInputDataBit(GPI_RF_SPI, GPIO_RF_SPI_MISO_PIN);
+    return GPIO_ReadInputDataBit(GPIO_RF_SPI, GPIO_RF_SPI_MISO_PIN);
 }
 //set MOSI High
 SW_SPI_DEF void SW_SPI_MOSI_H(void)
 {
-    GPIO_SetBits(GPIO_SW_SPI, GPIO_SW_SPI_MOSI_PIN);
+    GPIO_SetBits(GPIO_RF_SPI, GPIO_RF_SPI_MOSI_PIN);
 }
 //set MOSI Low
 SW_SPI_DEF void SW_SPI_MOSI_L(void)
 {
-    GPIO_ResetBits(GPIO_SW_SPI, GPIO_SW_SPI_MOSI_PIN);
+    GPIO_ResetBits(GPIO_RF_SPI, GPIO_RF_SPI_MOSI_PIN);
 }
 //set CLOCK High
 SW_SPI_DEF void SW_SPI_CLK_H(void)
 {
-    GPIO_SetBits(GPIO_SW_SPI, GPIO_SW_SPI_CLK_PIN);
+    GPIO_SetBits(GPIO_RF_SPI, GPIO_RF_SPI_CLK_PIN);
 }
 //set CLOCK Low
 SW_SPI_DEF void SW_SPI_CLK_L(void)
 {
-    GPIO_ResetBits(GPIO_SW_SPI, GPIO_SW_SPI_CLK_PIN);
+    GPIO_ResetBits(GPIO_RF_SPI, GPIO_RF_SPI_CLK_PIN);
 }
 
 SW_SPI_DEF void SW_SPI_MOSI_OUT(uint8_t out)
@@ -72,7 +72,7 @@ SW_SPI_DEF void SW_SPI_CLK_Init(void)
 
 SW_SPI_DEF void SW_SPI_CLK_Toggle(void)
 {
-    GPIO_WriteBit(GPIO_SW_SPI, GPIO_SW_SPI_CLK_PIN, (BitAction)(1-GPIO_ReadOutputDataBit(GPIO_RF_SPI, GPIO_RF_SPI_CLK_PIN)));
+    GPIO_WriteBit(GPIO_RF_SPI, GPIO_RF_SPI_CLK_PIN, (BitAction)(1-GPIO_ReadOutputDataBit(GPIO_RF_SPI, GPIO_RF_SPI_CLK_PIN)));
     TIMER_Wait_us(SW_SPI_WAIT_TIME);
 }
 
@@ -106,3 +106,6 @@ SW_SPI_DEF unsigned char SW_SPI_TXRX(unsigned char tx_data)
     TIMER_Wait_us(SW_SPI_WAIT_TIME);
     return rx_data;
 }
+
+#else
+#endif

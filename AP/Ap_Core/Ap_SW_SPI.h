@@ -19,10 +19,21 @@
 #define GPIO_SW_SPI_CLK_PIN        GPIO_Pin_13
 #define GPIO_SW_SPI_MISO_PIN       GPIO_Pin_14
 #define GPIO_SW_SPI_MOSI_PIN       GPIO_Pin_15
+#define GPIO_RF_SPI                GPIOA
+#define GPIO_RF_RESET              GPIOC
+#define GPIO_RF_VREG_EN            GPIOC
+#define GPIO_RF_GPIO0_4            GPIOC
+#define GPIO_RF_GPIO5              GPIOD
+#define GPIO_RF_SPI_NCS_PIN        GPIO_Pin_4
+#define GPIO_RF_SPI_CLK_PIN        GPIO_Pin_5
+#define GPIO_RF_SPI_MISO_PIN       GPIO_Pin_6
+#define GPIO_RF_SPI_MOSI_PIN       GPIO_Pin_7
+
 #endif
 
-uint32_t SW_SPI_CPHA_val = 0;
-uint32_t SW_SPI_CPOL_val = 0;
+
+static uint32_t SW_SPI_CPHA_val = 0;
+static uint32_t SW_SPI_CPOL_val = 0;
 
 
 #ifdef SW_SPI_LOCAL
