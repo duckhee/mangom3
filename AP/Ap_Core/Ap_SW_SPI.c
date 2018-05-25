@@ -2,6 +2,8 @@
 
 #include "Ap_SW_SPI.h"
 
+#define M32
+
 SW_SPI_DEF void TIMER_Wait_us(__IO uint32_t nCount);
 SW_SPI_DEF uint8_t SW_SPI_ReadVal_MISO(void);
 SW_SPI_DEF void SW_SPI_MOSI_H(void);

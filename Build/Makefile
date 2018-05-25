@@ -41,6 +41,7 @@ SRC_HWDRIVER = ../Hw/Hw_Lib/Hw_Led.c                     \
 
 #src aplication c file
 SRC_AP = ../Main/main.c                                  \
+        ../AP/Ap_Core/Ap_SW_SPI.c                        \
          #../AP/Ap_Core/Get_SysClock.c                    \
 		 ../Ap/Ap_Core/Queue.c                           \
          #../AP
