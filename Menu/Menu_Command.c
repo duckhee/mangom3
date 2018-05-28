@@ -40,7 +40,7 @@ struct _CMD_TBL{
 #define CMD_TBL_LED                   {"led_menu",  do_led,  0, 0, 0}
 #define CMD_TBL_KEY                   {"key_menu",  do_key,  0, 0, 0}
 #define CMD_TBL_SEG                   {"seg_menu",  do_seg,  0, 0, 0}
-
+#define CMD_TBL_BMA1600               {"bma1600_menu", do_bma1600, 0, 0, 0}
 #define CMD_TBL_END                   {0,           0,       0, 0, 0}
 
 //함수 프로토 타입 선언
@@ -54,6 +54,7 @@ bool do_test(struct _CMD_TBL *cptr, int argc, char **argv);
 bool do_led(struct _CMD_TBL *cptr, int argc, char **argv);
 bool do_key(struct _CMD_TBL *cptr, int argc, char **argv);
 bool do_seg(struct _CMD_TBL *cptr, int argc, char **argv);
+bool do_bma1600(struct _CMD_TBL *cptr, int argc, char **argv)
 //함수 대상 원형
 
 //구조체를 배열로 할당(구조체 배열)
@@ -65,6 +66,7 @@ struct _CMD_TBL cmd_tbl[] =
     CMD_TBL_LED,
     CMD_TBL_KEY,
     CMD_TBL_SEG,
+    CMD_TBL_BMA1600,
     //end는 0으로 되어있고 command에서 cptr이 0이면, for문은 빠져나오게 되어 있다.
     //end 밑에 추가하면 동작이 안된다.
     //추가 끝
@@ -263,5 +265,11 @@ bool do_seg(struct _CMD_TBL *cptr, int argc, char **argv)
 {
     printf("\nThis is seg test\n");
     command_seg_main(argc, argv);
+    return true;
+}
+
+bool do_bma1600(struct _CMD_TBL *cptr, int argc, char **argv)
+{
+    printf("\nThis is BMA1600 test\n");
     return true;
 }
