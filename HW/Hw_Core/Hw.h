@@ -3,7 +3,7 @@
 
 //uint8_t library add
 #include <stdint.h>
-
+//#include <stdio.h>
 //hardware define
 #include "Hw_Reg.h"
 #include "Hw_Rcc.h"

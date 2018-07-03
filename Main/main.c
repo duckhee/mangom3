@@ -23,4 +23,6 @@ int main()
     RCC_GetClocksFreq(&rcc_clocks);
     System_Information();
     printf("testing");
+    float testing = 5.1;
+    printf("%f", testing);
 }

@@ -7,6 +7,26 @@
 #define SW_SPI_WAIT_TIME          100
 
 
+#define GPIO_SW_SPI               GPIOA
+#define GPIO_SW_SPI_NCS_PIN       GPIO_Pin_4
+#define GPIO_SW_SPI_CLK_PIN       GPIO_Pin_5
+#define GPIO_SW_SPI_MISO_PIN      GPIO_Pin_6
+#define GPIO_SW_SPI_MOSI_PIN      GPIO_Pin_7
+#define GPIO_SW_SPI                GPIOB
+#define GPIO_SW_SPI_NCS_PIN        GPIO_Pin_12
+#define GPIO_SW_SPI_CLK_PIN        GPIO_Pin_13
+#define GPIO_SW_SPI_MISO_PIN       GPIO_Pin_14
+#define GPIO_SW_SPI_MOSI_PIN       GPIO_Pin_15
+#define GPIO_RF_SPI                GPIOA
+#define GPIO_RF_RESET              GPIOC
+#define GPIO_RF_VREG_EN            GPIOC
+#define GPIO_RF_GPIO0_4            GPIOC
+#define GPIO_RF_GPIO5              GPIOD
+#define GPIO_RF_SPI_NCS_PIN        GPIO_Pin_4
+#define GPIO_RF_SPI_CLK_PIN        GPIO_Pin_5
+#define GPIO_RF_SPI_MISO_PIN       GPIO_Pin_6
+#define GPIO_RF_SPI_MOSI_PIN       GPIO_Pin_7
+
 #ifdef M32
 #define GPIO_SW_SPI               GPIOA
 #define GPIO_SW_SPI_NCS_PIN       GPIO_Pin_4

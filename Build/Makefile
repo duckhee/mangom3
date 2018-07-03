@@ -148,8 +148,12 @@ REMOVE = $(REMOVE_CMD) -rf
 #CFLAGS += -fsingle-precision-constant -Wdouble-promotion
 #CFLAGS += -mfpu=fpv4-sp-d16 -mfloat-abi=hard
 
+#define make out define Set -D flag
+DEFMAKE =
+
+
 # Flags for C and C++ (arm-elf-gcc/arm-elf-g++) -DSTM32F10X_MD는 칩의 사양을 선택하는 것 
-CFLAGS  = -gdwarf-2 -O2 -mcpu=cortex-m3 -mthumb-interwork -DSTM32F10X_MD 
+CFLAGS  = -gdwarf-2 -O2 -mcpu=cortex-m3 -mfloat-abi=soft -msoft-float -mthumb-interwork -DSTM32F10X_MD 
 CFLAGS += $(INCLUDE) -mlong-calls -ffunction-sections -fdata-sections -Wall -Wextra -Wimplicit -Wcast-align -Wpointer-arith -Wredundant-decls 
 CFLAGS += -Wshadow -Wcast-qual -Wcast-align -Wa,-adhlns=start_stm32f10x.lst -MD -MP -MF $(TARGET).elf.d
 
@@ -158,6 +162,7 @@ CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
 
 #flag only for C
 CONLYFLAGS += -Wnested-externs 
+
 
 # Compiler flag to set the C Standard level.
 # c89   - "ANSI" C

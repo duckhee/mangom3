@@ -54,7 +54,7 @@ bool do_test(struct _CMD_TBL *cptr, int argc, char **argv);
 bool do_led(struct _CMD_TBL *cptr, int argc, char **argv);
 bool do_key(struct _CMD_TBL *cptr, int argc, char **argv);
 bool do_seg(struct _CMD_TBL *cptr, int argc, char **argv);
-bool do_bma1600(struct _CMD_TBL *cptr, int argc, char **argv)
+bool do_bma1600(struct _CMD_TBL *cptr, int argc, char **argv);
 //함수 대상 원형
 
 //구조체를 배열로 할당(구조체 배열)
