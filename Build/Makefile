@@ -1,5 +1,13 @@
+#gcc path
 PREFIX = arm-none-eabi-
+#remove cmd
 REMOVE_CMD = rm
+#build folder
+BUILD_DIR = ../Build_File
+#debug level
+DEBUG = 1
+#optimization
+OPT = -Og
 #startup c file
 STARTUP_C = Hw_StartUp.c
 #build folder
@@ -16,6 +24,10 @@ EXTRAINCDIRS = ../LIB               \
 			   ../Menu              \
 			   ../Main              \
 			   ../AP/Ap_Lib         \
+
+
+#ASM source
+ASM_SOURCE = ../
 
 #src hardware c file
 SRC_HW = ../HW/Hw_Core/$(STARTUP_C)                      \

@@ -14,7 +14,8 @@ MODEL = stm32f10x
 SUBMDL = stm32f103cb
 
 ifeq ($(ComSpec),)
-CROSS_COMPILE = /opt/CodeSourcery/eabi/arm-2012.03/bin/arm-none-eabi
+#CROSS_COMPILE = /opt/CodeSourcery/eabi/arm-2012.03/bin/arm-none-eabi
+CROSS_COMPILE = arm-none-eabi
 else
 SHELLCMD = cs-
 CROSS_COMPILE = arm-none-eabi
