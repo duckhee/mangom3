@@ -1,0 +1,6 @@
+{
+    "git.ignoreLimitWarning": true,
+    "files.associations": {
+        "stm32f10x_conf.h": "c"
+    }
+}

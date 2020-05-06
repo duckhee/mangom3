@@ -28,12 +28,15 @@ SRC_HW = ../HW/Hw_Core/$(STARTUP_C)                      \
 		 ../HW/Hw_Core/Hw_IRQ.c                          \
 		 ../HW/Hw_Core/Hw_NVIC.c                         \
 		 ../Hw/Hw_Core/Hw_Flash.c                        \
-		 #../HW/Hw_Core/Hw_ADC.c                          \
-		 ../HW/Hw_Core/Hw_SysTick.c                      \
+		 ../HW/Hw_Core/Hw_ADC.c                          \
 		 ../HW/Hw_Core/Hw_DMA.c                          \
 		 ../HW/Hw_Core/Hw_SPI.c                          \
+		 ../HW/Hw_Core/Hw_I2C.c                          \
+		 ../HW/Hw_Core/Hw_SysTick.c                      \
 		 
-SRC_HWDRIVER = ../Hw/Hw_Lib/Hw_Led.c                    \
+SRC_HWDRIVER = ../Hw/Hw_Lib/Hw_Led.c                     \
+               ../Hw/Hw_Lib/Hw_Key.c                     \
+			   ../Hw/Hw_Lib/Hw_Segment.c                 \
 
 
 #src aplication c file
@@ -51,6 +54,8 @@ SRC_LIB = ../LIB/Ld_printf.c                          \
 #src menu c file
 SRC_MENU = ../Menu/Menu_Command.c                                 \
            ../Menu/Led_Command.c                                  \
+		   ../Menu/Key_Command.c                                  \
+		   ../Menu/Seg_Command.c                                  \
 
 #source file 
 SRC =$(SRC_HW) $(SRC_LIB) $(SRC_MENU) $(SRC_AP) $(SRC_HWDRIVER)
